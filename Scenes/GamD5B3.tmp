@@ -1,0 +1,97 @@
+[gd_scene load_steps=14 format=3 uid="uid://bvwn4o1fw4e3e"]
+
+[ext_resource type="Script" path="res://Scripts/Game.gd" id="1_5kfdr"]
+[ext_resource type="Texture2D" uid="uid://c0nco8sxr2mrb" path="res://Assets/Sprites/Background-Tileset.png" id="1_y1vvy"]
+[ext_resource type="PackedScene" uid="uid://bj8w8e4ybdfya" path="res://Scenes/Player.tscn" id="2_5epcc"]
+[ext_resource type="PhysicsMaterial" uid="uid://bbnjcfjgqlmpy" path="res://Assets/Materials/Wall_Physics_Material.tres" id="3_kg8y4"]
+[ext_resource type="PackedScene" uid="uid://b8xvg32yvccnm" path="res://Scenes/Enemy.tscn" id="4_25vm3"]
+[ext_resource type="FontFile" uid="uid://cda5qhp12k8sh" path="res://Assets/Fonts/Minecraft.ttf" id="6_j8udb"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f8ggv"]
+texture = ExtResource("1_y1vvy")
+texture_region_size = Vector2i(10, 10)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+2:1/0 = 0
+1:1/0 = 0
+0:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_3q7ex"]
+tile_size = Vector2i(10, 10)
+sources/0 = SubResource("TileSetAtlasSource_f8ggv")
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_j0woe"]
+b = Vector2(0, 80)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_144jo"]
+a = Vector2(100, 0)
+b = Vector2(100, 80)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_at6xi"]
+b = Vector2(100, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_a47mh"]
+a = Vector2(0, 80)
+b = Vector2(100, 80)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gogga"]
+font = ExtResource("6_j8udb")
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_5kfdr")
+player = ExtResource("2_5epcc")
+enemy = ExtResource("4_25vm3")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_3q7ex")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 0, 0, 1, 65536, 0, 2, 65536, 0, 3, 65536, 0, 4, 65536, 0, 5, 65536, 0, 6, 65536, 0, 7, 65536, 0, 327680, 0, 1, 327687, 65536, 1, 65537, 65536, 1, 65538, 65536, 1, 65539, 65536, 1, 65540, 65536, 1, 65541, 65536, 1, 65542, 65536, 1, 131078, 65536, 1, 131077, 65536, 1, 131076, 65536, 1, 131075, 65536, 1, 131074, 65536, 1, 196610, 65536, 1, 196609, 65536, 1, 131073, 65536, 1, 196611, 65536, 1, 196612, 65536, 1, 196613, 65536, 1, 196614, 65536, 1, 262150, 65536, 1, 262149, 65536, 1, 262148, 65536, 1, 262147, 65536, 1, 262146, 65536, 1, 262145, 65536, 1, 327681, 65536, 1, 327682, 65536, 1, 327683, 65536, 1, 327684, 65536, 1, 327685, 65536, 1, 327686, 65536, 1, 65543, 65536, 1, 131079, 65536, 1, 196615, 65536, 1, 262151, 65536, 1, 65536, 0, 1, 131072, 0, 1, 196608, 0, 1, 262144, 0, 1, 8, 65536, 0, 9, 131072, 0, 65545, 131072, 1, 131081, 131072, 1, 196617, 131072, 1, 262153, 131072, 1, 327689, 131072, 1, 327688, 65536, 1, 262152, 65536, 1, 196616, 65536, 1, 131080, 65536, 1, 65544, 65536, 1, 458752, 0, 2, 458761, 131072, 2, 393225, 131072, 1, 458760, 65536, 2, 458759, 65536, 2, 458758, 65536, 2, 458757, 65536, 2, 458756, 65536, 2, 458755, 65536, 2, 458754, 65536, 2, 458753, 65536, 2, 393216, 0, 1, 393224, 65536, 1, 393223, 65536, 1, 393222, 65536, 1, 393221, 65536, 1, 393220, 65536, 1, 393219, 65536, 1, 393218, 65536, 1, 393217, 65536, 1)
+
+[node name="Walls" type="Node" parent="."]
+
+[node name="LeftWall" type="StaticBody2D" parent="Walls"]
+collision_layer = 16
+collision_mask = 15
+physics_material_override = ExtResource("3_kg8y4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
+shape = SubResource("SegmentShape2D_j0woe")
+
+[node name="RightWall" type="StaticBody2D" parent="Walls"]
+collision_layer = 16
+collision_mask = 15
+physics_material_override = ExtResource("3_kg8y4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
+shape = SubResource("SegmentShape2D_144jo")
+
+[node name="TopWall" type="StaticBody2D" parent="Walls"]
+collision_layer = 16
+collision_mask = 15
+physics_material_override = ExtResource("3_kg8y4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall"]
+shape = SubResource("SegmentShape2D_at6xi")
+
+[node name="BottomWall" type="StaticBody2D" parent="Walls"]
+collision_layer = 16
+collision_mask = 15
+physics_material_override = ExtResource("3_kg8y4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall"]
+shape = SubResource("SegmentShape2D_a47mh")
+
+[node name="UI" type="CenterContainer" parent="."]
+offset_right = 100.0
+offset_bottom = 80.0
+
+[node name="Text" type="Label" parent="UI"]
+layout_mode = 2
+text = "Survive!"
+label_settings = SubResource("LabelSettings_gogga")
+horizontal_alignment = 1
+uppercase = true

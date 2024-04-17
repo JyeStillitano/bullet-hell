@@ -1,0 +1,71 @@
+[gd_scene load_steps=12 format=3 uid="uid://ewa2u6x50lqn"]
+
+[ext_resource type="Script" path="res://Scripts/Bomb.gd" id="1_7wqea"]
+[ext_resource type="PackedScene" uid="uid://tls2avc0268d" path="res://Scenes/Projectile.tscn" id="1_hcwks"]
+[ext_resource type="Texture2D" uid="uid://bdi42shcae0mt" path="res://Assets/Sprites/Bomb.png" id="2_bmub3"]
+[ext_resource type="AudioStream" uid="uid://dtd7kfbtyspo4" path="res://Assets/Audio/Explosion2.wav" id="4_n8vv8"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qqns5"]
+rough = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fguir"]
+atlas = ExtResource("2_bmub3")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tidd6"]
+atlas = ExtResource("2_bmub3")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n33fe"]
+atlas = ExtResource("2_bmub3")
+region = Rect2(0, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hi04l"]
+atlas = ExtResource("2_bmub3")
+region = Rect2(10, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_43sdu"]
+atlas = ExtResource("2_bmub3")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kxt51"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fguir")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tidd6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n33fe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hi04l")
+}],
+"loop": true,
+"name": &"Collide",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_43sdu")
+}],
+"loop": true,
+"name": &"Fire",
+"speed": 5.0
+}]
+
+[node name="Bomb" instance=ExtResource("1_hcwks")]
+physics_material_override = SubResource("PhysicsMaterial_qqns5")
+script = ExtResource("1_7wqea")
+constant_speed = 500.0
+
+[node name="Sprite" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_kxt51")
+
+[node name="Fire" parent="SFX" index="0"]
+stream = ExtResource("4_n8vv8")
+
+[node name="Collide" parent="SFX" index="1"]
+stream = ExtResource("4_n8vv8")

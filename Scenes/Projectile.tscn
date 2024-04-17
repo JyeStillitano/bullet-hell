@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://tls2avc0268d"]
+
+[ext_resource type="Script" path="res://Scripts/Projectile.gd" id="1_bgl43"]
+[ext_resource type="AudioStream" uid="uid://dnvt117raviv5" path="res://Assets/Audio/Hit.wav" id="3_c84fc"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0hurv"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1tbh8"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"Collide",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Fly",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8kpiu"]
+size = Vector2(6, 6)
+
+[node name="Projectile" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_0hurv")
+gravity_scale = 0.0
+lock_rotation = true
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_bgl43")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_1tbh8")
+animation = &"Collide"
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8kpiu")
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="Fire" type="AudioStreamPlayer" parent="SFX"]
+
+[node name="Collide" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("3_c84fc")
+
+[node name="QueueFreeTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
+[connection signal="timeout" from="QueueFreeTimer" to="." method="_on_queue_free_timer_timeout"]

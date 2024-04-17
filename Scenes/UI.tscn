@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://cykvh576b7fow"]
+
+[ext_resource type="LabelSettings" uid="uid://be7xj1ujlk8uw" path="res://Assets/Fonts/GameFont.tres" id="1_1ydbe"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 160.0
+
+[node name="Score" type="Label" parent="."]
+layout_mode = 0
+offset_right = 34.0
+offset_bottom = 37.0
+text = "0"
+label_settings = ExtResource("1_1ydbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 160.0
+
+[node name="Text" type="Label" parent="TextContainer"]
+layout_mode = 2
+text = "Survive
+Press \"Space\""
+label_settings = ExtResource("1_1ydbe")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

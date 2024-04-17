@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bj8w8e4ybdfya"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_y0441"]
+[ext_resource type="Texture2D" uid="uid://oixkyvtjwfjy" path="res://Assets/Ship-Sheet.png" id="2_kl1rh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a2qmg"]
+radius = 5.0
+
+[node name="RigidBody2D" type="RigidBody2D"]
+gravity_scale = 0.0
+linear_damp = 10.0
+script = ExtResource("1_y0441")
+
+[node name="CollisionSphere" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_a2qmg")
+one_way_collision_margin = 10.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_kl1rh")
+hframes = 2

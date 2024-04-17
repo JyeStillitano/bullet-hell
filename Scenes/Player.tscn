@@ -1,0 +1,66 @@
+[gd_scene load_steps=11 format=3 uid="uid://b1uxoypnbk600"]
+
+[ext_resource type="PackedScene" uid="uid://bd2pj6sjfp1h6" path="res://Scenes/Entity.tscn" id="1_aeyk0"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="2_hobv0"]
+[ext_resource type="PackedScene" uid="uid://48pf7ahgilb0" path="res://Scenes/Laser.tscn" id="2_ic1au"]
+[ext_resource type="PackedScene" uid="uid://ewa2u6x50lqn" path="res://Scenes/Bomb.tscn" id="3_peuso"]
+[ext_resource type="Texture2D" uid="uid://gkdundggxojv" path="res://Assets/Sprites/Player-Sprite-Sheet.png" id="4_q2uq1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvmhe"]
+atlas = ExtResource("4_q2uq1")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocfbf"]
+atlas = ExtResource("4_q2uq1")
+region = Rect2(0, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_npnu3"]
+atlas = ExtResource("4_q2uq1")
+region = Rect2(10, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_spuvg"]
+atlas = ExtResource("4_q2uq1")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7o73f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvmhe")
+}],
+"loop": true,
+"name": &"Boost",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_ocfbf")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_npnu3")
+}],
+"loop": true,
+"name": &"Die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_spuvg")
+}],
+"loop": true,
+"name": &"Fly",
+"speed": 5.0
+}]
+
+[node name="Player" instance=ExtResource("1_aeyk0")]
+script = ExtResource("2_hobv0")
+start_position = Vector2(90, 20)
+boost_force_cooldown = 1.5
+boost_speed_cooldown = 0.25
+primary_projectile = ExtResource("2_ic1au")
+secondary_projectile = ExtResource("3_peuso")
+
+[node name="Sprite" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_7o73f")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

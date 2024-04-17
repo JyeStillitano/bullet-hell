@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://cte4807fq15yh"]
+
+[ext_resource type="Script" path="res://Scripts/Laser.gd" id="1_117k3"]
+[ext_resource type="Texture2D" uid="uid://4aba6676bf2d" path="res://Assets/Sprites/Laser.png" id="2_e5kyv"]
+[ext_resource type="AudioStream" uid="uid://bvxwd3ldfjj1m" path="res://Assets/Audio/Laser3.wav" id="3_2nbhd"]
+[ext_resource type="AudioStream" uid="uid://dnvt117raviv5" path="res://Assets/Audio/Hit.wav" id="4_umnl2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o1hxr"]
+size = Vector2(3, 1)
+
+[node name="EnemyProjectile" type="RigidBody2D"]
+collision_layer = 8
+collision_mask = 19
+gravity_scale = 0.0
+lock_rotation = true
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_117k3")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_e5kyv")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_o1hxr")
+
+[node name="LaserSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2nbhd")
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_umnl2")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

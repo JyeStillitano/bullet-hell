@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3 uid="uid://37yivsa82grd"]
+
+[ext_resource type="PackedScene" uid="uid://bd2pj6sjfp1h6" path="res://Scenes/Entity.tscn" id="1_5dnmr"]
+[ext_resource type="Script" path="res://Scripts/Enemy.gd" id="1_jar1u"]
+[ext_resource type="PackedScene" uid="uid://48pf7ahgilb0" path="res://Scenes/Laser.tscn" id="3_7krsu"]
+[ext_resource type="Texture2D" uid="uid://dn5012sduk2cn" path="res://Assets/Sprites/Enemy-Sprite-Sheet.png" id="4_8ced8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmiw6"]
+atlas = ExtResource("4_8ced8")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4sw5y"]
+atlas = ExtResource("4_8ced8")
+region = Rect2(0, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kklgo"]
+atlas = ExtResource("4_8ced8")
+region = Rect2(10, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cinq8"]
+atlas = ExtResource("4_8ced8")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mu5wp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmiw6")
+}],
+"loop": true,
+"name": &"Boost",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4sw5y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kklgo")
+}],
+"loop": true,
+"name": &"Die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cinq8")
+}],
+"loop": true,
+"name": &"Fly",
+"speed": 5.0
+}]
+
+[node name="Enemy" groups=["Enemies"] instance=ExtResource("1_5dnmr")]
+collision_layer = 4
+collision_mask = 19
+script = ExtResource("1_jar1u")
+change_direction_cooldown = 1.0
+charge_cooldown = 5.0
+start_position = Vector2(50, 60)
+primary_projectile = ExtResource("3_7krsu")
+secondary_projectile = ExtResource("3_7krsu")
+
+[node name="Sprite" parent="." index="1"]
+position = Vector2(1, 0)
+scale = Vector2(0.8, 1)
+sprite_frames = SubResource("SpriteFrames_mu5wp")
+animation = &"Boost"
+
+[node name="ChangeDirectionTimer" type="Timer" parent="." index="5"]
+one_shot = true
+
+[node name="ChargeTimer" type="Timer" parent="." index="6"]
+
+[node name="ShootTimer" type="Timer" parent="." index="7"]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="ChangeDirectionTimer" to="." method="on_change_direction_timer_timeout"]
+[connection signal="timeout" from="ChargeTimer" to="." method="on_charge_timer_timeout"]
+[connection signal="timeout" from="ShootTimer" to="." method="on_shoot_timer_timeout"]

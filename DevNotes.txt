@@ -1,0 +1,28 @@
+Layer: Exist on the following layer(s).
+Mask: Collides with items that exist on the following layers.
+
+Layer 1: Player
+Layer 2: Player Projectiles
+Layer 3: Enemy
+Layer 4: Enemy Projectiles
+Layer 5: Walls
+
+Friendly Projectile Layer: [0, 1, 0, 0, 0]
+Friendly Projectile Mask: [0, 0, 1, 1, 1]
+Enemy Projectile Layer: [0, 0, 0, 1, 0]
+Enemy Projectile Mask: [1, 1, 0, 0, 1]
+
+Projectile Refactor
+	
+	* Collided: bool
+	* ImpulseForce: float
+	* ConstantForce: float
+	* Dampening: float (?)
+	
+	- Rigidbody2D
+		- AnimatedSprite2D
+		- CollisionShape2D
+		- SFX
+			- Fire
+			- Collide
+			- Richochet (?)

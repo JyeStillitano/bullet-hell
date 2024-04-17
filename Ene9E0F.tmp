@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8xvg32yvccnm"]
+
+[ext_resource type="Script" path="res://Enemy.gd" id="1_da2vo"]
+[ext_resource type="Texture2D" uid="uid://dxulffvrk7kaj" path="res://Assets/Enemy.png" id="1_kdc6j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x22xk"]
+size = Vector2(8, 10)
+
+[node name="Enemy" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 19
+gravity_scale = 0.0
+lock_rotation = true
+linear_damp = 10.0
+script = ExtResource("1_da2vo")
+boost_speed = 250.0
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_x22xk")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_kdc6j")

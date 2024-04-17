@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://48pf7ahgilb0"]
+
+[ext_resource type="PackedScene" uid="uid://tls2avc0268d" path="res://Scenes/Projectile.tscn" id="1_ibpuj"]
+[ext_resource type="Texture2D" uid="uid://4aba6676bf2d" path="res://Assets/Sprites/Laser.png" id="2_4hwng"]
+[ext_resource type="AudioStream" uid="uid://bvxwd3ldfjj1m" path="res://Assets/Audio/Laser3.wav" id="4_0dn5b"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xkph"]
+atlas = ExtResource("2_4hwng")
+region = Rect2(0, 0, 3, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_88y3p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xkph")
+}],
+"loop": true,
+"name": &"Collide",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xkph")
+}],
+"loop": true,
+"name": &"Fire",
+"speed": 5.0
+}]
+
+[node name="Laser" instance=ExtResource("1_ibpuj")]
+impulse_speed = 8000.0
+constant_speed = 0.0
+
+[node name="Sprite" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_88y3p")
+animation = &"Fire"
+
+[node name="Fire" parent="SFX" index="0"]
+stream = ExtResource("4_0dn5b")
+volume_db = -10.0
+
+[node name="Collide" parent="SFX" index="1"]
+volume_db = -10.0

@@ -1,0 +1,146 @@
+[gd_scene load_steps=17 format=3 uid="uid://bd2pj6sjfp1h6"]
+
+[ext_resource type="Script" path="res://Scripts/Entity.gd" id="1_bl4tg"]
+[ext_resource type="Texture2D" uid="uid://gkdundggxojv" path="res://Assets/Sprites/Player-Sprite-Sheet.png" id="2_dksq6"]
+[ext_resource type="Shader" path="res://Shaders/Entity.gdshader" id="2_of4ph"]
+[ext_resource type="Texture2D" uid="uid://4aba6676bf2d" path="res://Assets/Sprites/Laser.png" id="3_1lece"]
+[ext_resource type="AudioStream" uid="uid://cgxbbthdyf6qa" path="res://Assets/Audio/Recharged3.wav" id="3_hre12"]
+[ext_resource type="AudioStream" uid="uid://bgl1cpx0hlklw" path="res://Assets/Audio/Explosion.wav" id="5_xseop"]
+[ext_resource type="AudioStream" uid="uid://dnvt117raviv5" path="res://Assets/Audio/Hit.wav" id="6_kf65j"]
+[ext_resource type="AudioStream" uid="uid://cay4u5cciyjiu" path="res://Assets/Audio/Boost2.wav" id="7_3m3s7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rawfa"]
+size = Vector2(8, 10)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g034m"]
+shader = ExtResource("2_of4ph")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvmhe"]
+atlas = ExtResource("2_dksq6")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocfbf"]
+atlas = ExtResource("2_dksq6")
+region = Rect2(0, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_npnu3"]
+atlas = ExtResource("2_dksq6")
+region = Rect2(10, 10, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_spuvg"]
+atlas = ExtResource("2_dksq6")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pasra"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mvmhe")
+}],
+"loop": true,
+"name": &"Boost",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_ocfbf")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_npnu3")
+}],
+"loop": true,
+"name": &"Die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_spuvg")
+}],
+"loop": true,
+"name": &"Fly",
+"speed": 5.0
+}]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_v5oky"]
+particle_flag_disable_z = true
+angle_min = -180.0
+angle_max = 180.0
+spread = 15.0
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+radial_velocity_max = 87.72
+gravity = Vector3(1, 0, 0)
+attractor_interaction_enabled = false
+hue_variation_max = 0.4
+
+[node name="Entity" type="RigidBody2D"]
+collision_mask = 28
+gravity_scale = 0.0
+lock_rotation = true
+contact_monitor = true
+linear_damp = 6.0
+script = ExtResource("1_bl4tg")
+secondary_projectile_fire_rate = 2.0
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_rawfa")
+one_way_collision_margin = 10.0
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_g034m")
+sprite_frames = SubResource("SpriteFrames_pasra")
+animation = &"Fly"
+
+[node name="FirePoint" type="Node2D" parent="Sprite"]
+position = Vector2(10, 0)
+
+[node name="Particles" type="GPUParticles2D" parent="Sprite/FirePoint"]
+position = Vector2(-3.93, 0)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_v5oky")
+texture = ExtResource("3_1lece")
+lifetime = 0.05
+one_shot = true
+speed_scale = 0.5
+explosiveness = 1.0
+randomness = 0.08
+visibility_rect = Rect2(-1, -10, 10, 20)
+
+[node name="BoostForceTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="BoostSpeedTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="PrimaryProjectileTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="SecondaryProjectileTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="QueueFreeTimer" type="Timer" parent="."]
+
+[node name="RechargeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_hre12")
+volume_db = -5.0
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_kf65j")
+
+[node name="BoostSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_3m3s7")
+volume_db = -10.0
+
+[node name="ExplosionSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_xseop")
+volume_db = -10.0
+
+[connection signal="timeout" from="BoostForceTimer" to="." method="on_boost_force_timer_timeout"]
+[connection signal="timeout" from="BoostSpeedTimer" to="." method="on_boost_speed_timer_timeout"]
+[connection signal="timeout" from="PrimaryProjectileTimer" to="." method="on_primary_projectile_timer_timeout"]
+[connection signal="timeout" from="SecondaryProjectileTimer" to="." method="on_secondary_projectile_timer_timeout"]
+[connection signal="timeout" from="QueueFreeTimer" to="." method="_on_queue_free_timer_timeout"]
